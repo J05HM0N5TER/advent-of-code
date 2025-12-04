@@ -1,0 +1,33 @@
+[workspace]
+resolver = "3"
+members = [
+  "day-*",
+]
+default-members = ["day-*"]
+
+[workspace.dependencies]
+divan = "0.1.7"
+glam = "0.30"
+itertools = "0.14.0"
+nom = "8.0.0"
+nom_locate = "5.0"
+rayon = "1.10.0"
+rstest = "0.26"
+thiserror = "2.0.3"
+tracing = "0.1.41"
+
+[workspace.dependencies.miette]
+version = "7.4"
+features = ["fancy"]
+
+[workspace.dependencies.test-log]
+version = "0.2.13"
+default-features = false
+features = ["trace"]
+
+[workspace.dependencies.tracing-subscriber]
+version = "0.3.18"
+features = [
+  "env-filter",
+  "fmt",
+]
