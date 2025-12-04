@@ -22,7 +22,7 @@ create day:
 # 3) Refresh
 # 5) Click https://adventofcode.com under "Cookies"
 # 6) Grab the value for session. Fill it into your .env file
-# 
+#
 # example .env:
 #
 # ```
@@ -31,4 +31,7 @@ create day:
 #
 # get the input for a day's puzzle
 get-input day:
-    ./scripts/get-aoc-input.rs --day {{day}} --current-working-directory {{justfile_directory()}}
+    cargo +nightly -Zscript ./scripts/get-aoc-input.rs --day {{day}} --current-working-directory "{{justfile_directory()}}"
+
+test-directory:
+	echo "{{justfile_directory()}}"

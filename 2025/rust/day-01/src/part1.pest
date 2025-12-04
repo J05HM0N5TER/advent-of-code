@@ -1,0 +1,5 @@
+// This is my first pest file
+direction   = { "L" | "R" }
+turns       = { ASCII_DIGIT+ }
+instruction = { direction ~ turns }
+file        = { SOI ~ (instruction ~ NEWLINE)* ~ EOI }

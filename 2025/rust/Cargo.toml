@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
   "day-*",
+  "day-01",
 ]
 default-members = ["day-*"]
 
@@ -11,6 +12,8 @@ glam = "0.30"
 itertools = "0.14.0"
 nom = "8.0.0"
 nom_locate = "5.0"
+pest = "2.8.4"
+pest_derive = "2.8.4"
 rayon = "1.10.0"
 rstest = "0.26"
 thiserror = "2.0.3"
