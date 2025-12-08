@@ -1,5 +1,8 @@
-// This is my first pest file
-direction   = { "L" | "R" }
-turns       = { ASCII_DIGIT+ }
+// Which direction the dial is turning
+direction = { "L" | "R" }
+// How much it is turning
+turns = { ASCII_DIGIT+ }
+// The complete instruction
 instruction = { direction ~ turns }
-file        = { SOI ~ (instruction ~ NEWLINE)* ~ EOI }
+// The complete format of the input file
+file = { SOI ~ (instruction ~ NEWLINE)* ~ EOI }

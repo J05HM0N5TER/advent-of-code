@@ -1,0 +1,6 @@
+// How much it is turning
+number = { ASCII_DIGIT+ }
+// The complete instruction
+instruction = { number ~ "-" ~ number }
+// The complete format of the input file
+file = { SOI ~ (instruction ~ ","?)* ~ NEWLINE ~ EOI }

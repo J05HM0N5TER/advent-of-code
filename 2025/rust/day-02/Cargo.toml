@@ -1,5 +1,5 @@
 [package]
-name = "{{project-name}}"
+name = "day-02"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,7 +7,7 @@ edition = "2024"
 
 [[bench]]
 harness = false
-name = "{{project-name}}-bench"
+name = "day-02-bench"
 path = "benches/benchmarks.rs"
 
 [dependencies]

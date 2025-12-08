@@ -6,6 +6,7 @@ edition = "2024"
 clap = { version = "4.5", features = ["derive"] }
 nom = "8"
 reqwest = { version = "0.12", features = ["blocking"] }
+dotenvy = "0.15.7"
 ---
 
 use clap::{error::ErrorKind, CommandFactory, Parser};
@@ -38,6 +39,7 @@ fn parse_day(input: &str) -> IResult<&str, u32> {
 }
 
 fn main() -> Result<(), reqwest::Error> {
+    dotenvy::dotenv().expect("Needs a .env file");
     let session = std::env::var("SESSION")
         .expect("should have a session token set");
     let args = Args::parse();

@@ -68,14 +68,11 @@ pub fn process(input: &str) -> miette::Result<i32> {
                         number_of_times_landed_at_zero + 1;
                 }
                 let (
-                    dial,
+                    dial_new,
                     number_of_times_landed_at_zero_instruction,
                 ) = process_turn(dial, &direction)?;
+                dial = dial_new;
                 number_of_times_landed_at_zero += number_of_times_landed_at_zero_instruction;
-                println!(
-                    "instuction {:?}, dial {}",
-                    direction, dial
-                );
             }
             Rule::file => {
                 return Err(miette!(
@@ -99,19 +96,9 @@ fn process_turn(
                 .try_into()
                 .into_diagnostic()?;
             let end_dial = start_dial - turns;
-            let password: i32 = {
-                let mut working_password = 0;
-                if (start_dial > 0 && end_dial <= 0)
-                    || (start_dial < 0 && start_dial >= 0)
-                {
-                    working_password += 1;
-                }
-                if end_dial.abs() >= DIAL_MAX {
-                    working_password +=
-                        end_dial.abs() / DIAL_MAX;
-                }
-                working_password
-            };
+            let password: i32 = get_password_from_turn(
+                start_dial, end_dial,
+            );
             Ok((end_dial.rem_euclid(DIAL_MAX), password))
         }
         Direction::Right(turns) => {
@@ -120,22 +107,28 @@ fn process_turn(
                 .try_into()
                 .into_diagnostic()?;
             let end_dial = start_dial + turns;
-            let password: i32 = {
-                let mut working_password = 0;
-                if (start_dial > 0 && end_dial <= 0)
-                    || (start_dial < 0 && start_dial >= 0)
-                {
-                    working_password += 1;
-                }
-                if end_dial.abs() >= DIAL_MAX {
-                    working_password +=
-                        end_dial.abs() / DIAL_MAX;
-                }
-                working_password
-            };
+            let password: i32 = get_password_from_turn(
+                start_dial, end_dial,
+            );
             Ok((end_dial.rem_euclid(DIAL_MAX), password))
         }
     }
+}
+
+fn get_password_from_turn(
+    start_dial: i32,
+    end_dial: i32,
+) -> i32 {
+    let mut working_password = 0;
+    if (start_dial > 0 && end_dial <= 0)
+        || (start_dial < 0 && start_dial >= 0)
+    {
+        working_password += 1;
+    }
+    if end_dial.abs() >= DIAL_MAX {
+        working_password += end_dial.abs() / DIAL_MAX;
+    }
+    working_password
 }
 
 #[derive(Debug)]
@@ -179,6 +172,14 @@ mod tests {
     #[case(99, Direction::new('L', 99).unwrap(), 0, 1)]
     #[case(0, Direction::new('R', 14).unwrap(), 14, 0)]
     #[case(14, Direction::new('L', 82).unwrap(), 32, 1)]
+    #[case(10, Direction::new('L', 3000).unwrap(), 10, 30)]
+    #[case(10, Direction::new('R', 3000).unwrap(), 10, 30)]
+    #[case(1, Direction::new('L', 2).unwrap(), 99, 1)]
+    #[case(99, Direction::new('R', 2).unwrap(), 1, 1)]
+    #[case(99, Direction::new('R', 1).unwrap(), 0, 1)]
+    #[case(0, Direction::new('R', 1).unwrap(), 1, 0)]
+    #[case(0, Direction::new('L', 1).unwrap(), 99, 0)]
+    #[case(50, Direction::new('R', 1000).unwrap(), 50, 10)]
     fn test_process(
         #[case] start_dial: i32,
         #[case] input: Direction,
